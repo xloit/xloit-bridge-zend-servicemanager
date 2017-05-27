@@ -78,7 +78,7 @@ abstract class AbstractServiceFactory implements Factory\AbstractServiceFactoryI
      *
      * @param string $pattern
      *
-     * @return static
+     * @return $this
      */
     public function setPattern($pattern)
     {
@@ -102,7 +102,7 @@ abstract class AbstractServiceFactory implements Factory\AbstractServiceFactoryI
      *
      * @param string $namespace
      *
-     * @return static
+     * @return $this
      */
     public function setNamespace($namespace)
     {
@@ -114,10 +114,10 @@ abstract class AbstractServiceFactory implements Factory\AbstractServiceFactoryI
     /**
      * A canCreate function.
      *
-     * @param \Interop\Container\ContainerInterface $container
-     * @param string                                $requestedName
+     * @param ContainerInterface $container
+     * @param string             $requestedName
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {

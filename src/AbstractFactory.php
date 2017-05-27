@@ -20,7 +20,6 @@ namespace Xloit\Bridge\Zend\ServiceManager;
 use Interop\Container\ContainerInterface;
 use ReflectionProperty;
 use Xloit\Std\ArrayUtils;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * An {@link AbstractFactory} abstract class.
@@ -82,26 +81,10 @@ abstract class AbstractFactory implements Factory\FactoryInterface
     /**
      *
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param string                  $requestedName
-     *
-     * @return mixed
-     * @throws \Xloit\Bridge\Zend\ServiceManager\Exception\StateException
-     * @throws \Xloit\Std\Exception\RuntimeException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator, $requestedName = null)
-    {
-        return $this($serviceLocator, $requestedName, $this->getOptions($serviceLocator));
-    }
-
-    /**
-     *
-     *
      * @param ContainerInterface $container
      *
-     * @return static
+     * @return $this
+     * @throws \ReflectionException
      */
     public function setContainer(ContainerInterface $container)
     {
@@ -133,13 +116,13 @@ abstract class AbstractFactory implements Factory\FactoryInterface
     /**
      * Gets options from configuration based on name.
      *
-     * @param boolean $nullAble
+     * @param bool $nullAble
      *
      * @return array
-     * @throws \Interop\Container\Exception\NotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Xloit\Std\Exception\RuntimeException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Xloit\Bridge\Zend\ServiceManager\Exception\StateException
+     * @throws \Xloit\Std\Exception\RuntimeException
      */
     public function getOptions($nullAble = true)
     {
@@ -176,11 +159,11 @@ abstract class AbstractFactory implements Factory\FactoryInterface
      *
      * @param string $name
      *
-     * @return boolean
-     * @throws \Interop\Container\Exception\NotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Xloit\Std\Exception\RuntimeException
+     * @return bool
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Xloit\Bridge\Zend\ServiceManager\Exception\StateException
+     * @throws \Xloit\Std\Exception\RuntimeException
      */
     public function hasOption($name)
     {
@@ -192,16 +175,14 @@ abstract class AbstractFactory implements Factory\FactoryInterface
     /**
      *
      *
-     * @param string  $name
-     * @param boolean $factory
+     * @param string $name
+     * @param bool   $factory
      *
      * @return mixed
-     * @throws \Interop\Container\Exception\NotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Xloit\Std\Exception\RuntimeException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Xloit\Bridge\Zend\ServiceManager\Exception\StateException
+     * @throws \Xloit\Std\Exception\RuntimeException
      */
     public function getOption($name, $factory = true)
     {
@@ -228,7 +209,8 @@ abstract class AbstractFactory implements Factory\FactoryInterface
      *
      * @param ContainerInterface $container
      *
-     * @return static
+     * @return ContainerInterface
+     * @throws \ReflectionException
      */
     public static function getPeerContainer(ContainerInterface $container)
     {

@@ -33,7 +33,7 @@ interface AbstractServiceFactoryInterface extends AbstractFactoryInterface
      * @param ContainerInterface $container
      * @param string             $name
      *
-     * @return array|boolean
+     * @return array|bool
      */
     public function getServiceMapping(ContainerInterface $container, $name);
 }

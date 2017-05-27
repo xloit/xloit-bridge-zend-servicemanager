@@ -45,13 +45,14 @@ class ServiceFactory extends AbstractServiceFactory
     /**
      * Create an object.
      *
-     * @param  ContainerInterface $container
-     * @param  string             $requestedName
-     * @param  null|array         $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param null|array         $options
      *
      * @return mixed
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \ReflectionException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Xloit\Bridge\Zend\ServiceManager\Exception\ServiceNotFoundException
      * @throws \Xloit\Std\Exception\RuntimeException
      */
@@ -107,8 +108,9 @@ class ServiceFactory extends AbstractServiceFactory
      * @param string             $name
      *
      * @return boolean|array
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \ReflectionException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Xloit\Std\Exception\RuntimeException
      */
     public function getServiceMapping(ContainerInterface $container, $name)
@@ -186,22 +188,21 @@ class ServiceFactory extends AbstractServiceFactory
     /**
      * Initiate service factory from the ReflectionClass.
      *
-     * @param  string            $requestedName
+     * @param string             $requestedName
      * @param ReflectionClass    $reflection
      * @param ContainerInterface $container
      *
      * @return mixed
-     * @throws \Interop\Container\Exception\NotFoundException
+     * @throws \ReflectionException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Xloit\Std\Exception\RuntimeException
-     * @throws \Interop\Container\Exception\ContainerException
      */
     protected function createServiceFactory(
         $requestedName, ReflectionClass $reflection, ContainerInterface $container
     ) {
         /** @var array $mappings */
         $mappings = $this->getServiceMapping($container, $requestedName);
-
-        /** @var \Zend\ServiceManager\Factory\FactoryInterface $factory */
 
         if ($reflection->implementsInterface(Factory\FactoryInterface::class)) {
             $factory = $reflection->newInstance($mappings['namespace'], $mappings['service'], $this->namespace);

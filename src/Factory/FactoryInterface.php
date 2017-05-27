@@ -32,15 +32,15 @@ interface FactoryInterface extends ZendFactoryInterface
      *
      * @param ContainerInterface $container
      *
-     * @return static
+     * @return $this
      */
     public function setContainer(ContainerInterface $container);
 
     /**
      *
      *
-     * @param string  $name
-     * @param boolean $factory
+     * @param string $name
+     * @param bool   $factory
      *
      * @return mixed
      */
@@ -51,14 +51,14 @@ interface FactoryInterface extends ZendFactoryInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function hasOption($name);
 
     /**
      * Gets options from configuration based on name.
      *
-     * @param boolean $nullAble
+     * @param bool $nullAble
      *
      * @return array
      */

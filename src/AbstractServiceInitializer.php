@@ -17,6 +17,7 @@
 
 namespace Xloit\Bridge\Zend\ServiceManager;
 
+use Exception;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Initializer\InitializerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -53,12 +54,13 @@ abstract class AbstractServiceInitializer implements InitializerInterface
     /**
      * Initialize the given instance.
      *
-     * @param  ContainerInterface $container
-     * @param  mixed              $instance
+     * @param ContainerInterface $container
+     * @param mixed              $instance
      *
      * @return void
-     * @throws \Interop\Container\Exception\NotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \ReflectionException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __invoke(ContainerInterface $container, $instance)
     {
@@ -78,7 +80,7 @@ abstract class AbstractServiceInitializer implements InitializerInterface
             // Some vendor will try to throw an exception
             try {
                 $instanceValue = $instance->{$method['getter']}();
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
             }
 
             // Maybe it was initialized by factory
@@ -130,8 +132,8 @@ abstract class AbstractServiceInitializer implements InitializerInterface
      * @param ContainerInterface $container
      *
      * @return mixed
-     * @throws \Interop\Container\Exception\NotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function getServiceInstance(ContainerInterface $container)
     {
@@ -147,7 +149,9 @@ abstract class AbstractServiceInitializer implements InitializerInterface
 
                 if ($container->has($serviceName)) {
                     break;
-                } elseif (
+                }
+
+                if (
                     $peerContainer
                     && $peerContainer instanceof ServiceLocatorInterface
                     && $peerContainer->has($serviceName)
