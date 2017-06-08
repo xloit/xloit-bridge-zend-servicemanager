@@ -104,7 +104,7 @@ abstract class AbstractFactory implements Factory\FactoryInterface
      *
      * @param array $options
      *
-     * @return static
+     * @return $this
      */
     public function setOptions(array $options)
     {
