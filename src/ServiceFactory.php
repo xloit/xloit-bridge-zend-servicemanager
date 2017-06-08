@@ -168,7 +168,7 @@ class ServiceFactory extends AbstractServiceFactory
 
         // We've an invalid configuration somehow
         if (!$factory) {
-            $this->lookupCache[$name] = null;
+            $this->lookupCache[$name] = false;
 
             return false;
         }
